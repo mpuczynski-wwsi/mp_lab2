@@ -6,7 +6,7 @@ COPY . /usr/src/myapp
 WORKDIR /usr/src/myapp
 
 # This command compiles your app using GCC, adjust for your source code
-RUN g++ -o lab2 lab2.cpp
+RUN g++ -std=c++11 -o lab2 lab2.cpp
 
 # This command runs your application, comment out this line to compile only
 CMD ["./lab2"]
