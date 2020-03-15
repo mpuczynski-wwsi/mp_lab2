@@ -24,7 +24,8 @@ void wyswietlKlientowZ();
 int kwotaZadluzenia();
 void wyswietlKwoteZadluzenia();
 void pobierzDane(string); 
-void zapiszDane(string plik, Wynik * out);
+void zapiszDane(string, Wynik*);
+void pobierzDaneWynikowe(string, Wynik*, string);
 
 int main(){
 	pobierzDane("klienci.txt");
@@ -54,9 +55,7 @@ void menu(){
       wyswietlKlientowZ();
       break;
     case 3:
-
-      break;
-    case 4:
+      wyswietlKwoteZadluzenia();
       break;
     }
   } while (wybor != 0);
@@ -88,6 +87,22 @@ void wyswietlKlientowZ(){
   int ileKlientow = iloscKlientowZ();
   Wynik wynik = {.wynik=ileKlientow};
   zapiszDane("wynik.dat", &wynik);
+  pobierzDaneWynikowe("wynik.dat", &wynik, "Ilosc klientow zadluzonych: ");
+}
+
+int kwotaZadluzenia(){
+  int kwota = 0;
+  for(int i = 0; i < klienci.size(); i++){
+      kwota += klienci[i].zadluzenie;
+  }
+  return kwota;
+}
+
+void wyswietlKwoteZadluzenia(){
+  int kwotaZ = kwotaZadluzenia();
+  Wynik wynik = {.wynik=kwotaZ};
+  zapiszDane("wynik.dat", &wynik);
+  pobierzDaneWynikowe("wynik.dat", &wynik, "Laczna kwota zadluzenia: ");
 }
 
 
@@ -127,5 +142,15 @@ void zapiszDane(string plik, Wynik * out){
   z.open(plik, ios::binary );
   z.write((char*)out, sizeof(*out));
   z.close();
+}
+
+void pobierzDaneWynikowe(string plik, Wynik *r, string odpowiedz)
+{
+     ifstream z(plik, ios_base::binary );
+     int ktory = 0;
+     z.seekg(ktory);
+     z.read((char*)r, sizeof(*r));
+     cout<< odpowiedz << r->wynik << "\n";
+     z.close();
 }
 
